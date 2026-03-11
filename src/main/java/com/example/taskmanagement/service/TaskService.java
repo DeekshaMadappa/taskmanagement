@@ -1,6 +1,7 @@
 package com.example.taskmanagement.service;
 
 import com.example.taskmanagement.Entity.Task;
+import com.example.taskmanagement.exception.ResourceNotFoundException;
 import com.example.taskmanagement.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import java.util.List;
 
 @Service
 public class TaskService {
+
     @Autowired
     private TaskRepository taskRepository;
 
@@ -28,11 +30,11 @@ public class TaskService {
     }
 
     public Task updateTaskStatus(Long id, String status) {
-        Task task = taskRepository.findById(id).orElseThrow();
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
         task.setStatus(status);
         return taskRepository.save(task);
     }
-
     public void deleteTask(Long id) {
         taskRepository.deleteById(id);
     }

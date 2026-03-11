@@ -2,6 +2,7 @@ package com.example.taskmanagement.Entity;
 
 import com.example.taskmanagement.Entity.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import java.time.LocalDateTime;
 
@@ -16,10 +17,12 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     private String title;
 
     private String description;
 
+    @NotBlank
     private String status; // TODO, IN_PROGRESS, DONE
 
     private LocalDateTime dueDate;

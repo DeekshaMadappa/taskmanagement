@@ -33,6 +33,16 @@ public class TaskController {
         return taskService.getTasksByUser(userId);
     }
 
+    @GetMapping("/{id}")
+    public Task getTaskById(@PathVariable Long id) {
+        return taskService.getTaskById(id);
+    }
+
+    @PutMapping("/{id}")
+    public Task updateTask(@PathVariable Long id, @Valid @RequestBody Task task) {
+        return taskService.updateTask(id, task);
+    }
+
     @PutMapping("/{id}/status")
     public Task updateTaskStatus(@PathVariable Long id, @RequestParam String status) {
         return taskService.updateTaskStatus(id, status);

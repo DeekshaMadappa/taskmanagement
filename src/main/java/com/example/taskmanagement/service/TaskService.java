@@ -29,12 +29,28 @@ public class TaskService {
         return taskRepository.findByAssignedUserId(userId);
     }
 
-    public Task updateTaskStatus(Long id, String status) {
-        Task task = taskRepository.findById(id)
+    public Task getTaskById(Long id) {
+        return taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
+    }
+
+    public Task updateTask(Long id, Task updated) {
+        Task task = getTaskById(id);
+        task.setTitle(updated.getTitle());
+        task.setDescription(updated.getDescription());
+        task.setStatus(updated.getStatus());
+        task.setDueDate(updated.getDueDate());
+        task.setProject(updated.getProject());
+        task.setAssignedUser(updated.getAssignedUser());
+        return taskRepository.save(task);
+    }
+
+    public Task updateTaskStatus(Long id, String status) {
+        Task task = getTaskById(id);
         task.setStatus(status);
         return taskRepository.save(task);
     }
+
     public void deleteTask(Long id) {
         taskRepository.deleteById(id);
     }

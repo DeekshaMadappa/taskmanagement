@@ -1,6 +1,7 @@
 package com.example.taskmanagement.controller;
 
 import com.example.taskmanagement.Entity.Project;
+import com.example.taskmanagement.dto.ProjectResponse;
 import com.example.taskmanagement.service.ProjectService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,27 +17,27 @@ public class ProjectController {
     private ProjectService projectService;
 
     @GetMapping
-    public List<Project> getAllProjects() {
+    public List<ProjectResponse> getAllProjects() {
         return projectService.getAllProjects();
     }
 
     @GetMapping("/{id}")
-    public Project getProjectById(@PathVariable Long id) {
+    public ProjectResponse getProjectById(@PathVariable Long id) {
         return projectService.getProjectById(id);
     }
 
     @GetMapping("/owner/{ownerId}")
-    public List<Project> getProjectsByOwner(@PathVariable Long ownerId) {
+    public List<ProjectResponse> getProjectsByOwner(@PathVariable Long ownerId) {
         return projectService.getProjectsByOwner(ownerId);
     }
 
     @PostMapping
-    public Project createProject(@Valid @RequestBody Project project) {
+    public ProjectResponse createProject(@Valid @RequestBody Project project) {
         return projectService.createProject(project);
     }
 
     @PutMapping("/{id}")
-    public Project updateProject(@PathVariable Long id, @Valid @RequestBody Project project) {
+    public ProjectResponse updateProject(@PathVariable Long id, @Valid @RequestBody Project project) {
         return projectService.updateProject(id, project);
     }
 

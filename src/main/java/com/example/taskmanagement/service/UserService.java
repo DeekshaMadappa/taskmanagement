@@ -1,6 +1,6 @@
 package com.example.taskmanagement.service;
 
-import com.example.taskmanagement.Entity.User;
+import com.example.taskmanagement.dto.UserResponse;
 import com.example.taskmanagement.exception.ResourceNotFoundException;
 import com.example.taskmanagement.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +14,13 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserResponse> getAllUsers() {
+        return userRepository.findAll().stream().map(UserResponse::from).toList();
     }
 
-    public User getUserById(Long id) {
+    public UserResponse getUserById(Long id) {
         return userRepository.findById(id)
+                .map(UserResponse::from)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
     }
 

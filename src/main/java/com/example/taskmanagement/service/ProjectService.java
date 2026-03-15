@@ -5,9 +5,9 @@ import com.example.taskmanagement.dto.ProjectResponse;
 import com.example.taskmanagement.exception.ResourceNotFoundException;
 import com.example.taskmanagement.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ProjectService {
@@ -15,8 +15,8 @@ public class ProjectService {
     @Autowired
     private ProjectRepository projectRepository;
 
-    public List<ProjectResponse> getAllProjects() {
-        return projectRepository.findAll().stream().map(ProjectResponse::from).toList();
+    public Page<ProjectResponse> getAllProjects(Pageable pageable) {
+        return projectRepository.findAll(pageable).map(ProjectResponse::from);
     }
 
     public ProjectResponse getProjectById(Long id) {
@@ -25,8 +25,8 @@ public class ProjectService {
                 .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + id));
     }
 
-    public List<ProjectResponse> getProjectsByOwner(Long ownerId) {
-        return projectRepository.findByOwnerId(ownerId).stream().map(ProjectResponse::from).toList();
+    public Page<ProjectResponse> getProjectsByOwner(Long ownerId, Pageable pageable) {
+        return projectRepository.findByOwnerId(ownerId, pageable).map(ProjectResponse::from);
     }
 
     public ProjectResponse createProject(Project project) {

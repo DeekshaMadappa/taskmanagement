@@ -5,9 +5,10 @@ import com.example.taskmanagement.dto.ProjectResponse;
 import com.example.taskmanagement.service.ProjectService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/projects")
@@ -17,8 +18,8 @@ public class ProjectController {
     private ProjectService projectService;
 
     @GetMapping
-    public List<ProjectResponse> getAllProjects() {
-        return projectService.getAllProjects();
+    public Page<ProjectResponse> getAllProjects(@PageableDefault(size = 10) Pageable pageable) {
+        return projectService.getAllProjects(pageable);
     }
 
     @GetMapping("/{id}")
@@ -27,8 +28,9 @@ public class ProjectController {
     }
 
     @GetMapping("/owner/{ownerId}")
-    public List<ProjectResponse> getProjectsByOwner(@PathVariable Long ownerId) {
-        return projectService.getProjectsByOwner(ownerId);
+    public Page<ProjectResponse> getProjectsByOwner(@PathVariable Long ownerId,
+                                                    @PageableDefault(size = 10) Pageable pageable) {
+        return projectService.getProjectsByOwner(ownerId, pageable);
     }
 
     @PostMapping

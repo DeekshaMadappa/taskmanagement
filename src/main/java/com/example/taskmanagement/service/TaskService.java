@@ -5,9 +5,9 @@ import com.example.taskmanagement.dto.TaskResponse;
 import com.example.taskmanagement.exception.ResourceNotFoundException;
 import com.example.taskmanagement.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class TaskService {
@@ -25,16 +25,16 @@ public class TaskService {
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
     }
 
-    public List<TaskResponse> getTasksByStatus(String status) {
-        return taskRepository.findByStatus(status).stream().map(TaskResponse::from).toList();
+    public Page<TaskResponse> getTasksByStatus(String status, Pageable pageable) {
+        return taskRepository.findByStatus(status, pageable).map(TaskResponse::from);
     }
 
-    public List<TaskResponse> getTasksByProject(Long projectId) {
-        return taskRepository.findByProjectId(projectId).stream().map(TaskResponse::from).toList();
+    public Page<TaskResponse> getTasksByProject(Long projectId, Pageable pageable) {
+        return taskRepository.findByProjectId(projectId, pageable).map(TaskResponse::from);
     }
 
-    public List<TaskResponse> getTasksByUser(Long userId) {
-        return taskRepository.findByAssignedUserId(userId).stream().map(TaskResponse::from).toList();
+    public Page<TaskResponse> getTasksByUser(Long userId, Pageable pageable) {
+        return taskRepository.findByAssignedUserId(userId, pageable).map(TaskResponse::from);
     }
 
     public TaskResponse updateTask(Long id, Task updated) {
@@ -55,6 +55,7 @@ public class TaskService {
         task.setStatus(status);
         return TaskResponse.from(taskRepository.save(task));
     }
+
 
     public void deleteTask(Long id) {
         taskRepository.deleteById(id);

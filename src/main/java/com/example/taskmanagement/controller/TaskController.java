@@ -5,9 +5,10 @@ import com.example.taskmanagement.dto.TaskResponse;
 import com.example.taskmanagement.service.TaskService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/tasks")
@@ -27,18 +28,21 @@ public class TaskController {
     }
 
     @GetMapping("/status/{status}")
-    public List<TaskResponse> getTasksByStatus(@PathVariable String status) {
-        return taskService.getTasksByStatus(status);
+    public Page<TaskResponse> getTasksByStatus(@PathVariable String status,
+                                               @PageableDefault(size = 10) Pageable pageable) {
+        return taskService.getTasksByStatus(status, pageable);
     }
 
     @GetMapping("/project/{projectId}")
-    public List<TaskResponse> getTasksByProject(@PathVariable Long projectId) {
-        return taskService.getTasksByProject(projectId);
+    public Page<TaskResponse> getTasksByProject(@PathVariable Long projectId,
+                                                @PageableDefault(size = 10) Pageable pageable) {
+        return taskService.getTasksByProject(projectId, pageable);
     }
 
     @GetMapping("/user/{userId}")
-    public List<TaskResponse> getTasksByUser(@PathVariable Long userId) {
-        return taskService.getTasksByUser(userId);
+    public Page<TaskResponse> getTasksByUser(@PathVariable Long userId,
+                                             @PageableDefault(size = 10) Pageable pageable) {
+        return taskService.getTasksByUser(userId, pageable);
     }
 
     @PutMapping("/{id}")
